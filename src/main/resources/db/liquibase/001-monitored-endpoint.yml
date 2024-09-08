@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: monitored-endpoint
+      author: pkozuch
+      changes:
+        - createTable:
+            tableName: monitored_endpoint
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_checked_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monitoring_interval
+                  type: bigint
+                  constraints:
+                    nullable: false

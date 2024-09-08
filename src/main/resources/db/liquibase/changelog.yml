@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: 000-monitored-endpoint.yml
+      relativeToChangelogFile: true
+  - include:
+      file: 001-user.yml
+      relativeToChangelogFile: true
+  - include:
+      file: 002-monitoring-result.yml
+      relativeToChangelogFile: true

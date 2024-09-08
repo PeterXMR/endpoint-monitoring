@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user-table
+      author: pKozuch
+      changes:
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: username
+                  value: 'Applifting'
+              - column:
+                  name: email
+                  value: 'info@applifting.cz'
+              - column:
+                  name: access_token
+                  value: '93f39e2f-80de-4033-99ee-249d92736a25'
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: username
+                  value: 'Batman'
+              - column:
+                  name: email
+                  value: 'batman@example.com'
+              - column:
+                  name: access_token
+                  value: 'dcb20f8a-5657-4f1b-9f7f-ce65739b359e'
