@@ -11,21 +11,16 @@ databaseChangeLog:
                   type: bigint
                   constraints:
                     primaryKey: true
+                    nullable: false
+                  autoIncrement: true
               - column:
                   name: checked_at
-                  type: timestamp with time zone
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
                   name: last_checked_at
-                  type: timestamp with time zone
-                  constraints:
-                    nullable: false
-              - column:
-                  name: monitoring_interval
-                  type: bigint
-                  constraints:
-                    nullable: false
+                  type: timestamp
               - column:
                   name: status_code
                   type: bigint
@@ -33,6 +28,18 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: payload
-                  type: varchar(100)
+                  type: longtext
                   constraints:
                     nullable: false
+              - column:
+                  name: monitored_endpoint_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: monitoring_result
+            baseColumnNames: monitored_endpoint_id
+            referencedTableName: monitored_endpoint
+            referencedColumnNames: id
+            constraintName: fk_monitoring_result_endpoint
+            onDelete: CASCADE

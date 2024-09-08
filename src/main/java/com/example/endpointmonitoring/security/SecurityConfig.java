@@ -1,4 +1,4 @@
-package com.example.endpointmonitoring;
+package com.example.endpointmonitoring.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,22 +15,26 @@ public class SecurityConfig {
 
     private final AccessTokenFilter accessTokenFilter;
 
-    public SecurityConfig(AccessTokenFilter accessTokenFilter) {
+    public SecurityConfig(
+            AccessTokenFilter accessTokenFilter
+    ) {
         this.accessTokenFilter = accessTokenFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless API
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/endpoints/**").authenticated() // Secure your endpoints
-                                .anyRequest().permitAll() // Allow all other requests
+                                .requestMatchers("/api/v1/endpoints/**").authenticated()
+                                .anyRequest().permitAll()
                 )
-                .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class) // Add your custom filter
+                .addFilterBefore(accessTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(sessionManagement ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session management
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
         return http.build();
     }

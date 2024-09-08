@@ -1,73 +1,72 @@
 package com.example.endpointmonitoring.controller;
 
+import com.example.endpointmonitoring.dto.MonitoredEndpointRequest;
+import com.example.endpointmonitoring.dto.MonitoredEndpointResponse;
 import com.example.endpointmonitoring.model.MonitoredEndpoint;
-import com.example.endpointmonitoring.model.User;
-import com.example.endpointmonitoring.repository.MonitoredEndpointRepository;
-import com.example.endpointmonitoring.repository.MonitoringResultRepository;
-import com.example.endpointmonitoring.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.endpointmonitoring.service.MonitoredEndpointService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpClient;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/endpoints")
+@RequestMapping("/api/v1/endpoints")
+@Validated
 public class MonitoredEndpointController {
 
-    private MonitoredEndpointRepository endpointRepository;
+    private final MonitoredEndpointService monitoredEndpointService;
 
-    public MonitoredEndpointController(MonitoredEndpointRepository endpointRepository) {
-        this.endpointRepository = endpointRepository;
+    public MonitoredEndpointController(
+            MonitoredEndpointService monitoredEndpointService
+    ) {
+        this.monitoredEndpointService = monitoredEndpointService;
     }
 
     @PostMapping
-    public ResponseEntity<MonitoredEndpoint> createEndpoint(@RequestBody MonitoredEndpoint endpoint, HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        endpoint.setOwner(user);
-        endpoint.setCreatedAt(LocalDateTime.now());
-        endpoint.setLastCheckedAt(null);
-        MonitoredEndpoint savedEndpoint = endpointRepository.save(endpoint);
-        return ResponseEntity.ok(savedEndpoint);
+    public ResponseEntity<MonitoredEndpointResponse> createEndpoint(
+           @RequestHeader("Access-Token") String accessToken,
+           @RequestBody MonitoredEndpointRequest endpoint
+    ) {
+        return ResponseEntity.ok(monitoredEndpointService.createMonitoredEndpoint(accessToken, endpoint));
     }
 
     @GetMapping
-    public ResponseEntity<List<MonitoredEndpoint>> getEndpoints(HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        List<MonitoredEndpoint> endpoints = endpointRepository.findByOwner(user);
-        return ResponseEntity.ok(endpoints);
+    public ResponseEntity<List<MonitoredEndpointResponse>> getEndpoints(
+            @RequestHeader("Access-Token") String accessToken
+    ) {
+        List<MonitoredEndpointResponse> endpoints = monitoredEndpointService.getEndpointsResponse(accessToken);
+        if (endpoints != null) {
+            return ResponseEntity.ok(endpoints);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MonitoredEndpoint> updateEndpoint(@PathVariable Long id, @RequestBody MonitoredEndpoint updatedEndpoint, HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        MonitoredEndpoint endpoint = endpointRepository.findByIdAndOwner(id, user);
-
+    public ResponseEntity<MonitoredEndpointResponse> updateEndpoint(
+            @PathVariable Long id,
+            @RequestHeader("Access-Token") String accessToken,
+            @RequestBody MonitoredEndpoint updatedEndpoint
+    ) {
+        MonitoredEndpointResponse endpoint = monitoredEndpointService.updateEndpoint(id, accessToken, updatedEndpoint);
         if (endpoint != null) {
-            endpoint.setName(updatedEndpoint.getName());
-            endpoint.setUrl(updatedEndpoint.getUrl());
-            endpoint.setMonitoringInterval(updatedEndpoint.getMonitoringInterval());
-            endpointRepository.save(endpoint);
             return ResponseEntity.ok(endpoint);
+        } else {
+            return ResponseEntity.status(404).build();
         }
-
-        return ResponseEntity.status(404).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEndpoint(@PathVariable Long id, HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        MonitoredEndpoint endpoint = endpointRepository.findByIdAndOwner(id, user);
-
-        if (endpoint != null) {
-            endpointRepository.delete(endpoint);
+    public ResponseEntity<Void> deleteEndpoint(
+            @PathVariable Long id,
+            @RequestHeader("Access-Token") String accessToken
+    ) {
+        if (monitoredEndpointService.deleteEndpointSuccess(id, accessToken)) {
             return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(404).build();
         }
-
-        return ResponseEntity.status(404).build();
     }
 }
 

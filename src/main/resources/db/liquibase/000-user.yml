@@ -1,27 +1,33 @@
-- changeSet:
-    id: user
-    author: pkozuch
-    changes:
-      - createTable:
-          tableName: user
-          columns:
-            - column:
-                name: id
-                type: bigint
-                constraints:
-                  primaryKey: true
-            - column:
-                name: username
-                type: varchar(100)
-                constraints:
-                  nullable: false
-            - column:
-                name: email
-                type: varchar(100)
-                constraints:
-                  nullable: false
-            - column:
-                name: access_token
-                type: varchar(100)
-                constraints:
-                  nullable: false
+databaseChangeLog:
+  - changeSet:
+      id: user
+      author: pkozuch
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  autoIncrement: true
+              - column:
+                  name: username
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: access_token
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true

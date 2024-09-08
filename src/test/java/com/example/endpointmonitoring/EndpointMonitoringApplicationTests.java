@@ -9,5 +9,4 @@ class EndpointMonitoringApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

@@ -1,30 +1,43 @@
 package com.example.endpointmonitoring.dto;
 
+import com.example.endpointmonitoring.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public class MonitoredEndpointDto {
+public class MonitoredEndpointRequest {
 
     private Long id;
 
-    @NotBlank(message = "Name must not be blank")
-    @Size(max = 100, message = "Name must not exceed 100 characters")
+    @Getter
+    @Setter
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = 100, message = "Name cannot exceed 100 characters")
     private String name;
 
-    @NotBlank(message = "URL must not be blank")
-    @Size(max = 100, message = "URL must not exceed 100 characters")
+    @Getter
+    @Setter
+    @NotBlank(message = "URL cannot be blank")
+    @Size(max = 100, message = "URL cannot exceed 100 characters")
     private String url;
 
-    @NotNull(message = "Created At must not be null")
+    @Getter
+    @Setter
     private LocalDateTime createdAt;
 
+    @Getter
+    @Setter
     private LocalDateTime lastCheckedAt;
+    @Getter
+    @Setter
+    @NotNull(message = "Monitoring Interval cannot be null")
+    private Integer monitoringInterval; // in seconds
 
-    @NotNull(message = "Monitoring Interval must not be null")
-    private Integer monitoringInterval;
-
-    private UserDto user;
+    @Getter
+    @Setter
+    private User user;
 }

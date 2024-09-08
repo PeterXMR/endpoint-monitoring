@@ -1,7 +1,6 @@
-package com.example.endpointmonitoring;
+package com.example.endpointmonitoring.controller;
 
 import com.example.endpointmonitoring.model.MonitoringResult;
-import com.example.endpointmonitoring.service.MonitoredEndpointService;
 import com.example.endpointmonitoring.service.MonitoringResultService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,11 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,9 +29,6 @@ class MonitorResultControllerTest {
 
     @MockBean
     private MonitoringResultService monitoringResultService;
-
-    @MockBean
-    private MonitoredEndpointService monitoredEndpointService;
 
     @Test
     void testGetLast10Results_Success() throws Exception {
@@ -48,7 +44,7 @@ class MonitorResultControllerTest {
                 .thenReturn(mockResults);
 
         mockMvc.perform(get("/api/v1/results/1/last10")
-                        .header("Access-Token", "test-token")
+                        .header("Access-Token", "93f39e2f-80de-4033-99ee-249d92736a25")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(10))
@@ -62,7 +58,7 @@ class MonitorResultControllerTest {
                 .thenReturn(null);
 
         mockMvc.perform(get("/api/v1/results/1/last10")
-                        .header("Access-Token", "test-token")
+                        .header("Access-Token", "93f39e2f-80de-4033-99ee-249d92736a25")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -73,7 +69,7 @@ class MonitorResultControllerTest {
                 .thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/api/v1/results/1/last10")
-                        .header("Access-Token", "test-token")
+                        .header("Access-Token", "93f39e2f-80de-4033-99ee-249d92736a25")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
