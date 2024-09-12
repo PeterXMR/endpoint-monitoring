@@ -20,7 +20,7 @@ public class MonitoringResultController {
     }
 
     @GetMapping("/{endpointId}/last10")
-    public ResponseEntity<List<MonitoringResult>> getLast10Results(
+    public ResponseEntity<List<MonitoringResult>> getLastTenResults(
             @RequestHeader("Access-Token") String accessToken,
             @PathVariable Long endpointId
     ) {

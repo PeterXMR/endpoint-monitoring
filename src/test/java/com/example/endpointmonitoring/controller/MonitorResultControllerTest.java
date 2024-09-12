@@ -31,7 +31,7 @@ class MonitorResultControllerTest {
     private MonitoringResultService monitoringResultService;
 
     @Test
-    void testGetLast10Results_Success() throws Exception {
+    void testGetLastTenResults_Success() throws Exception {
         List<MonitoringResult> mockResults = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             MonitoringResult result = new MonitoringResult();
@@ -53,7 +53,7 @@ class MonitorResultControllerTest {
     }
 
     @Test
-    void testGetLast10Results_NotFound() throws Exception {
+    void testGetLastTenResults_NotFound() throws Exception {
         Mockito.when(monitoringResultService.getLastTenResults(anyString(), anyLong()))
                 .thenReturn(null);
 
@@ -64,7 +64,7 @@ class MonitorResultControllerTest {
     }
 
     @Test
-    void testGetLast10Results_EmptyResults() throws Exception {
+    void testGetLastTenResults_EmptyResults() throws Exception {
         Mockito.when(monitoringResultService.getLastTenResults(anyString(), anyLong()))
                 .thenReturn(new ArrayList<>());
 
