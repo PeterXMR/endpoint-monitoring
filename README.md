@@ -23,7 +23,7 @@ GRANT ALL PRIVILEGES ON SCHEMA endpoint_monitoring TO mysql;
 ```
 
 ## SWAGGER UI:
-http://localhost:8080/swagger-ui/index.htmlgradele
+http://localhost:8080/swagger-ui/index.html
 
 ### TODO:
 - Edit docker-compose so one can run MySQL db directly with Endpoints monitoring service from Docker. -> IN PROGRESS
