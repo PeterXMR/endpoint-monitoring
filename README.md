@@ -1,7 +1,7 @@
 # Endpoints monitoring service
 
 ## Requirements:
-MySql Database
+MySql Database,
 Java 21
 
 ## Setup
