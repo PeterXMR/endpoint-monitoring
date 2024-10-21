@@ -11,14 +11,14 @@ Check the `src/main/resources/application*.properties` for configuration.
 
 ```sql
 CREATE DATABASE mysql;
-CREATE USER root WITH PASSWORD 'applifting';
+CREATE USER root WITH PASSWORD 'demo';
 GRANT ALL PRIVILEGES ON DATABASE mysql TO root;
 ```
 
-###create schema if not exists
+### create schema if not exists
 ```sql
 \c mysql;
-CREATE SCHEMA treasure_tortoise;
+CREATE SCHEMA demo;
 GRANT ALL PRIVILEGES ON SCHEMA endpoint_monitoring TO mysql;
 ```
 
